@@ -102,21 +102,33 @@
 
   function setDate() {
     const now = new Date();
+
+    //get the individual times
     const seconds = now.getSeconds();
-    const secondsDegrees = ( ( seconds / 60 ) * 360 ) + 90 // to get seconds to a base 100 and then in degrees, plus 90 as we offset the angle to 90 deg by default (we want a vertical line not a horizontal line)
-
     const minutes = now.getMinutes();
-    const minutesDegrees = ( ( minutes / 60 ) * 360 ) + 90
-
     const hours = now.getHours();
-    const hoursDegrees = ( ( hours / 12 ) * 360 ) + 90
+    
+    //convert times to degrees
+    const secondsDegrees = timeToDegree(seconds, 60); 
+    const minutesDegrees = timeToDegree(minutes, 60);
+    const hoursDegrees = timeToDegree(hours, 12);
 
+    // add css to hands
     secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
     minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
     hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
 
-
     // console.log(`${hours}:${minutes}:${seconds}`);
+  }
+
+  /*
+    To convert the time into degrees: 
+      * devide by timeUnit to get seconds to a base 100
+      * multiply by 360 to convert it into degrees
+      * add 90 to offset the angle to 90 deg which is set as default by css (so the hand starts as a vertical line)
+  */
+  function timeToDegree(time, timeUnit) {
+    return ((time / timeUnit) * 360) + 90;
   }
 
   setInterval(setDate, 1000); // call setDat() every second
